@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authService } from 'myFirebase';
+import { authService, firebaseInstatnce } from 'myFirebase';
 
 // export default () => <span>Auth</span>;
 
@@ -43,6 +43,23 @@ const Auth = () => {
   //firebase 로그인 확인하기
   //Application > IndexedDb > firebaseLoacalStorage
 
+  //sns
+  const onSocialClick = async (event) => {
+    console.log(event.target.name);
+    const {target: {name},} = event;
+
+    let provider;
+
+    if (name === 'google') {
+      provider = new firebaseInstatnce.auth.GoogleAuthProvider();
+    } else if (name === 'github') {
+      provider = new firebaseInstatnce.auth.GithubAuthProvider();
+    }
+    
+    const data = await authService.signInWithPopup(provider);
+    console.log(data);
+  }
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -50,12 +67,13 @@ const Auth = () => {
         <input name="password" type="password" placeholder="password" value={password} onChange={onChange} required />
         <input type="submit" value={newAccount ? "Create Account" : "sign In"} />
       </form>
+
       {error}
-  <span onClick={toggleAccount}>{newAccount ? "sign in": "create Account"}</span>
+      <span onClick={toggleAccount}>{newAccount ? "sign in" : "create Account"}</span>
 
       <div>
-        <button type="button">continue with google</button>
-        <button type="button">continue with github</button>
+        <button name="google" type="button" onClick={onSocialClick}>continue with google</button>
+        <button name="github" type="button" onClick={onSocialClick}>continue with github</button>
       </div>
 
     </div>
