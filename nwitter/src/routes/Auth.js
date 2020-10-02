@@ -6,11 +6,11 @@ import { authService } from 'myFirebase';
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newAccount, setNewAccount]=useState(false);
+  const [newAccount, setNewAccount] = useState(true);
 
   const onChange = (event) => {
     // console.log(event.target.name);
-    const {target: {name, value}} = event;
+    const { target: { name, value } } = event;
     if (name === 'email') {
       setEmail(value)
     } else if (name === 'password') {
@@ -19,34 +19,40 @@ const Auth = () => {
   }
   const onSubmit = async (event) => {
     event.preventDefault(); //새로고침X
-
-    if (newAccount) {
-      //회원가입
-      await authService.createUserWithEmailAndPassword(
-        email, password
-      )
-    } else {
-      //로그인
-      await authService.signInWithEmailAndPassword(
-        email, password
-      )
-
+    try {
+      let data;
+      if (newAccount) {
+        //회원가입
+        data = await authService.createUserWithEmailAndPassword(
+          email, password
+        )
+      } else {
+        //로그인
+        data = await authService.signInWithEmailAndPassword(
+          email, password
+        );
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+  //firebase 로그인 확인하기
+  //Application > IndexedDb > firebaseLoacalStorage
 
   return (
     <div>
       <form onSubmit={onSubmit}>
         <input name="email" type="email" placeholder="email" value={email} onChange={onChange} required />
         <input name="password" type="password" placeholder="password" value={password} onChange={onChange} required />
-        <input type="submit" value={newAccount ? "Create Account":"Log In"} />
+        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
       </form>
 
       <div>
         <button type="button">continue with google</button>
         <button type="button">continue with github</button>
       </div>
-    
+
     </div>
   );
 }
