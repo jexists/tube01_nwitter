@@ -7,6 +7,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState("");
 
   const onChange = (event) => {
     // console.log(event.target.name);
@@ -35,8 +36,10 @@ const Auth = () => {
       console.log(data);
     } catch (error) {
       console.log(error);
+      setError(error.message);
     }
   };
+  const toggleAccount = () => setNewAccount(prev => !prev);
   //firebase 로그인 확인하기
   //Application > IndexedDb > firebaseLoacalStorage
 
@@ -45,8 +48,10 @@ const Auth = () => {
       <form onSubmit={onSubmit}>
         <input name="email" type="email" placeholder="email" value={email} onChange={onChange} required />
         <input name="password" type="password" placeholder="password" value={password} onChange={onChange} required />
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+        <input type="submit" value={newAccount ? "Create Account" : "sign In"} />
       </form>
+      {error}
+  <span onClick={toggleAccount}>{newAccount ? "sign in": "create Account"}</span>
 
       <div>
         <button type="button">continue with google</button>
