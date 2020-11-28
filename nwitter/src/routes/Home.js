@@ -41,10 +41,24 @@ const Home = ({ userObj }) => {
   }, [])
   const onSubmit = async (event) => {
     event.preventDefault();
-    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
-    console.log(fileRef);
-    const reponse = await fileRef.putString(attachment, 'data_url');
-    console.log('reponse', reponse);
+    let attachmentUrl = "";
+    if (attachment != "") {
+      const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+      console.log(attachmentRef);
+      const reponse = await attachmentRef.putString(attachment, 'data_url');
+      console.log('reponse', reponse);
+      console.log('reponse', await reponse.ref.getDownloadURL());
+      attachmentUrl = await reponse.ref.getDownloadURL();
+    }
+    const nweetObj = {
+      text: nweet,
+      createdDate: Date.now(),
+      creatorId: userObj.uid,
+      attachmentUrl,
+    };
+    await dbService.collection("nweets").add(nweetObj);
+    setNweet("");
+    setAttachment("");
     // 데이터 전송
     // await dbService.collection("nweets").add({
     //   text: nweet,
@@ -74,7 +88,7 @@ const Home = ({ userObj }) => {
     reader.readAsDataURL(theFile);
   };
   const onClearAttachment = () => {
-   setAttachment(null); 
+    setAttachment(null);
   }
 
   return (
