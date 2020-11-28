@@ -19,11 +19,12 @@ function App() {
         // setUserObj(user);
         // } else {
         //   setIsLoggedIn(false);
-        setUserObj({
-          displayName: user.displayName,
-          uid: user.uid,
-          updateProfile: (args) => user.updateProfile(args),
-        });
+        // setUserObj({
+        //   displayName: user.displayName,
+        //   uid: user.uid,
+        //   updateProfile: (args) => user.updateProfile(args),
+        // });
+        setUserObj(user);
       }
       setInit(true);
     });
@@ -35,12 +36,13 @@ function App() {
     console.log(authService.currentUser.displayName);
     console.log(authService.currentUser);
     const user = authService.currentUser;
-    setUserObj({
-      displayName: user.displayName,
-      uid: user.uid,
-      updateProfile: (args) => user.updateProfile(args),
-    });
-  }
+    // setUserObj({
+    //   displayName: user.displayName,
+    //   uid: user.uid,
+    //   updateProfile: (args) => user.updateProfile(args),
+    // });
+    setUserObj(Object.assign({}, user));
+  };
   // setInterval(() => {
   //   console.log(authService.currentUser);
   // }, 2000);
