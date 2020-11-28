@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { dbService, deService } from "myFirebase";
+import { v4 as uuidv4 } from 'uuid';
+import { dbService, deService, storageService } from "myFirebase";
 import Nweet from "components/Nweet";
+import { storage } from "firebase";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
@@ -39,13 +41,17 @@ const Home = ({ userObj }) => {
   }, [])
   const onSubmit = async (event) => {
     event.preventDefault();
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    console.log(fileRef);
+    const reponse = await fileRef.putString(attachment, 'data_url');
+    console.log('reponse', reponse);
     // 데이터 전송
-    await dbService.collection("nweets").add({
-      text: nweet,
-      createdDate: Date.now(),
-      creatorId: userObj.uid,
-    });
-    setNweet("");
+    // await dbService.collection("nweets").add({
+    //   text: nweet,
+    //   createdDate: Date.now(),
+    //   creatorId: userObj.uid,
+    // });
+    // setNweet("");
   }
   const onChange = (event) => {
     const { target: { value } } = event; //event안에 있는 target안에 있는 value
