@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { dbService } from "myFirebase";
+import { dbService, storageService } from "myFirebase";
 
 const Nweet = ({ nweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -10,6 +10,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     if (ok) {
       //delete nweet
       await dbService.doc(`nweets/${nweetObj.id}`).delete();
+      await storageService.refFromURL(nweetObj.attachmentUrl).delete();
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
