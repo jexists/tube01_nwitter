@@ -6,7 +6,7 @@ import { authService } from "myFirebase";
 function App() {
   // console.log(authService.currentUser); //null;
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   const [init, setInit] = useState(false);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState(null);
@@ -16,14 +16,31 @@ function App() {
       console.log(user);
       if (user) {
         // setIsLoggedIn(true);
-        setUserObj(user);
-      // } else {
-      //   setIsLoggedIn(false);
+        // setUserObj(user);
+        // } else {
+        //   setIsLoggedIn(false);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       }
       setInit(true);
     });
-  },[])
-  
+  }, [])
+  const refreshUser = () => {
+    // setUserObj(authService.currentUser); 
+      //not working => 내용이 많아서 변경힘듬
+    // setUserObj({displayName:"changed"});
+    console.log(authService.currentUser.displayName);
+    console.log(authService.currentUser);
+    const user = authService.currentUser;
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  }
   // setInterval(() => {
   //   console.log(authService.currentUser);
   // }, 2000);
@@ -36,7 +53,7 @@ function App() {
   // );
   return (
     <>
-      {init ? <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} /> : "initializing..." }
+      {init ? <AppRouter refreshUser={refreshUser} isLoggedIn={Boolean(userObj)} userObj={userObj} /> : "initializing..."}
       <footer>&copy; Nwitter {new Date().getFullYear()}</footer>
     </>
   );
