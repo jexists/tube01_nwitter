@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../styles.scss';
 import AppRouter from 'components/Router';
 // import { myFirebase } from "myFirebase";
 import { authService } from "myFirebase";
@@ -31,7 +32,7 @@ function App() {
   }, [])
   const refreshUser = () => {
     // setUserObj(authService.currentUser); 
-      //not working => 내용이 많아서 변경힘듬
+    //not working => 내용이 많아서 변경힘듬
     // setUserObj({displayName:"changed"});
     console.log(authService.currentUser.displayName);
     console.log(authService.currentUser);
