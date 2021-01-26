@@ -46,7 +46,7 @@ const Auth = () => {
   //sns
   const onSocialClick = async (event) => {
     console.log(event.target.name);
-    const {target: {name},} = event;
+    const { target: { name }, } = event;
 
     let provider;
 
@@ -55,13 +55,13 @@ const Auth = () => {
     } else if (name === 'github') {
       provider = new firebaseInstatnce.auth.GithubAuthProvider();
     }
-    
+
     const data = await authService.signInWithPopup(provider);
     console.log(data);
   }
 
   return (
-    <div>
+    <div class="auth_area">
       <form onSubmit={onSubmit}>
         <input name="email" type="email" placeholder="email" value={email} onChange={onChange} required />
         <input name="password" type="password" placeholder="password" value={password} onChange={onChange} required />
