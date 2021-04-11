@@ -9,3 +9,5 @@
 **/f_farcel_test
 
 .DS_Store
+
+**/env.js
