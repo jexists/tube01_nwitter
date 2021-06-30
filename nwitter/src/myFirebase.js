@@ -1,8 +1,8 @@
+import { environment } from "./environments/env"
 import * as firebase from "firebase/app"
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { environment } from "./environments/env"
 
 var firebaseConfig = {
   apiKey: environment.FIREBASE_API_KEY,
